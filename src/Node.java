@@ -6,30 +6,19 @@ public class Node implements Runnable{
     private int x;
     private int y;
     private int totalNodes;
-    private Receiver[] receivers;
-    private Sender[] senders;
+    private TCPReceiver receiver;
+    private TCPSender sender;
 
     public Node(int nodeID, int totalNumberOfNodes){
         this.nodeID = nodeID;
         this.totalNodes = totalNumberOfNodes;
-        this.receivers = new Receiver[totalNumberOfNodes];
-        this.senders = new Sender[totalNumberOfNodes];
+        this.receiver = new TCPReceiver(nodeID);
+        this.sender = new TCPSender(nodeID);
     }
 
     public void init(){
         x = Math.round((float)Math.random()*100);
         y = Math.round((float)Math.random()*100);
-
-        for (int i = 0; i < totalNodes; i++) {
-            receivers[i] = new Receiver(this.nodeID, i + 1);
-            senders[i] = new Sender(this.nodeID, i + 1);
-        }
-        for (Receiver receiver : receivers) {
-            receiver.run();
-        }
-        for (Sender sender : senders) {
-            sender.run();
-        }
     }
 
     @Override
