@@ -1,48 +1,40 @@
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+
 
 public class Node implements Runnable{
 
     private int nodeID;
     private int x;
     private int y;
-    private final int DEFAULT_PORT = 5777;
-    final static int MAX_PACKET_SIZE = 65507;
+    private int totalNodes;
+    private Receiver[] receivers;
+    private Sender[] senders;
 
-    // main Methode evtl noch auslagern in eigene Controller-Klasse?
-    public static void main(String[] args) {
-        Node node = new Node(1);
-        node.init();
-        node.run();
-    }
-
-    public Node(int nodeID){
+    public Node(int nodeID, int totalNumberOfNodes){
         this.nodeID = nodeID;
+        this.totalNodes = totalNumberOfNodes;
+        this.receivers = new Receiver[totalNumberOfNodes];
+        this.senders = new Sender[totalNumberOfNodes];
     }
 
-    private void init(){
+    public void init(){
         x = Math.round((float)Math.random()*100);
         y = Math.round((float)Math.random()*100);
 
+        for (int i = 0; i < totalNodes; i++) {
+            receivers[i] = new Receiver(this.nodeID, i + 1);
+            senders[i] = new Sender(this.nodeID, i + 1);
+        }
+        for (Receiver receiver : receivers) {
+            receiver.run();
+        }
+        for (Sender sender : senders) {
+            sender.run();
+        }
     }
 
     @Override
     public void run(){
-        System.out.println("Node [" + this.nodeID + "] is online.");
-        while(true){
-            // Hier wird ein UDP-Socket als Ressource erstellt, wird nach try-Block automatisch wieder geschlossen
-            try(DatagramSocket socket = new DatagramSocket(DEFAULT_PORT)){
-
-                // Erstellen eines Datagram Packets, warten auf eingehende Nachrichten
-                DatagramPacket data = new DatagramPacket(new byte[MAX_PACKET_SIZE], MAX_PACKET_SIZE);
-                socket.receive(data);
-
-            } catch(IOException e){
-                e.printStackTrace();
-            }
-            return;
-        }
+        System.out.println("Node [" + this.nodeID + "] is running.");
     }
 
     public int getX(){
