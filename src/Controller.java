@@ -1,6 +1,6 @@
 public class Controller {
 
-    private static final int TOTAL_NUMBER_OF_NODES = 5;
+    private static final int TOTAL_NUMBER_OF_NODES = 2;
 
     public static void main(String[] args) {
         Node[] nodes = new Node[TOTAL_NUMBER_OF_NODES];
@@ -10,7 +10,7 @@ public class Controller {
             node.init();
         }
         for (Node node : nodes) {
-            node.run();
+            node.start();
         }
     }
 }
