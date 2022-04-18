@@ -8,12 +8,13 @@ public class Node extends Thread{
     private Thread receiverThread;
     private TCPSender sender;
     private Thread senderThread;
+    private static int range = 10;
 
     public Node(int nodeID, int totalNumberOfNodes){
         this.nodeID = nodeID;
         this.totalNodes = totalNumberOfNodes;
-        this.receiver = new TCPReceiver(nodeID);
-        this.sender = new TCPSender(nodeID);
+        this.receiver = new TCPReceiver(this);
+        this.sender = new TCPSender(this);
     }
 
     public void init(){
@@ -30,7 +31,7 @@ public class Node extends Thread{
         System.out.println("Node [" + this.nodeID + "] is running.");
         if(this.nodeID == 0){
             int destinationPort = 7700 + totalNodes - 1;
-            this.sender.sendMessage(new Message(1, Message.Type.HELLO, destinationPort));
+            this.sender.sendMessage(new Message(1, Message.Type.HELLO, destinationPort, this.x, this.y));
         }
     }
 
@@ -39,5 +40,11 @@ public class Node extends Thread{
     }
     public int getY(){
         return y;
+    }
+    public int getRange(){
+        return range;
+    }
+    public int getNodeID(){
+        return nodeID;
     }
 }

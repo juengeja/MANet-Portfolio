@@ -4,22 +4,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TCPSender implements Runnable{
     
-    private int nodeID;
+    private Node ownNode;
     private int ownPort;
     private ConcurrentLinkedQueue<Message> messageQueue;
     private String hostname = "localhost";
     private PrintWriter networkOut;
 
-    public TCPSender(int nodeID){
-        this.nodeID = nodeID;
-        this.ownPort = 7700 + nodeID;
+    public TCPSender(Node ownNode){
+        this.ownNode = ownNode;
+        this.ownPort = 7700 + ownNode.getNodeID();
         messageQueue = new ConcurrentLinkedQueue<>();
     }
 
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        System.out.println("Sender of Node [" + nodeID + "] is running.");
+        System.out.println("Sender of Node [" + ownNode.getNodeID() + "] is running.");
 
         while(true){
             // Checking for a Message to send

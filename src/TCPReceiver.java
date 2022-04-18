@@ -3,17 +3,17 @@ import java.net.*;
 
 public class TCPReceiver implements Runnable{
     
-    private int nodeID;
+    private Node ownNode;
     private int port;
 
-    public TCPReceiver(int nodeID){
-        this.nodeID = nodeID;
-        this.port = 7700 + nodeID;
+    public TCPReceiver(Node ownNode){
+        this.ownNode = ownNode;
+        this.port = 7700 + ownNode.getNodeID();
     }
 
     @Override
     public void run() {
-        System.out.println("Receiver of Node [" + nodeID + "] is running.");
+        System.out.println("Receiver of Node [" + ownNode.getNodeID() + "] is running.");
 
         Socket connection = null;
         ObjectInputStream in = null;
@@ -28,19 +28,24 @@ public class TCPReceiver implements Runnable{
                 //Nachricht lesen
                 Message message = (Message) in.readObject();
 
-                // Verarbeiten der Nachricht
-                switch (message.getType()) {
-                    case HELLO:
-                        // TODO
-                        System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
-                        break;
-                    case TC:
-                        // TODO
-                        System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
-                        break;
-                    default:
-                        // TODO
-                        System.out.println("Receiver [" + this.port + "] received something strange.");
+                if(ownNode.getRange() >= Math.sqrt(Math.pow((ownNode.getX()-message.getSourceX()),(ownNode.getY()-message.getSourceY())))){
+
+                    // Verarbeiten der Nachricht
+                    switch (message.getType()) {
+                        case HELLO:
+                            // TODO
+                            System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
+                            break;
+                        case TC:
+                            // TODO
+                            System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
+                            break;
+                        default:
+                            // TODO
+                            System.out.println("Receiver [" + this.port + "] received something strange.");
+                    }
+                } else {
+                    System.out.println("Receiver der Node " + ownNode.getNodeID() + " ist außer Reichweite für diese Nachricht!");
                 }
             }
         } catch(IOException e){
