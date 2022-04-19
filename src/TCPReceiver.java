@@ -28,7 +28,7 @@ public class TCPReceiver implements Runnable{
                 //Nachricht lesen
                 Message message = (Message) in.readObject();
 
-                if(ownNode.getRange() >= Math.sqrt(Math.pow((ownNode.getX()-message.getSourceX()),(ownNode.getY()-message.getSourceY())))){
+                if(ownNode.getRange() >= Math.sqrt(Math.pow((ownNode.getX()-message.getSourceX()),2) + Math.pow((ownNode.getY()-message.getSourceY()), 2))){
 
                     // Verarbeiten der Nachricht
                     switch (message.getType()) {

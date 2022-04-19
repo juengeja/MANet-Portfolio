@@ -20,6 +20,7 @@ public class Node extends Thread{
     public void init(){
         x = Math.round((float)Math.random()*100);
         y = Math.round((float)Math.random()*100);
+        System.out.println("Initialisierung mit Koordinaten: " + x + ", " + y);
         this.receiverThread = new Thread(receiver);
         receiverThread.start();
         this.senderThread = new Thread(sender);
