@@ -1,7 +1,7 @@
 public class Station {
     private int x, y, groesse;
 
-    public static final int schrittgroesse = 40;
+    public static final int schrittgroesse = 10;
 
     public Station(int x, int y, int groesse) {
         this.x = x;
