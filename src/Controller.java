@@ -71,10 +71,40 @@ public class Controller {
         frame.setVisible(true);
     }
 
-
+    public Controller(Node[] netNodes){
+        JFrame frame = new JFrame("Mobiles Ad-Hoc Netz") {
+            public void paint(Graphics g) {
+                for (Node node : netNodes) {
+                    
+                    int x = node.getX();
+                    int y = node.getY();
+                    Graphics2D g2d = (Graphics2D) g;
+                    g2d.drawOval(x, y, sendeReichweite, sendeReichweite);
+                }
+                Graphics2D g2d = (Graphics2D) g;
+                for (int x = 0; x < netNodes.length; x++) {
+                    for (int y = 0; y < netNodes.length; y++) {
+                        if (erreichbarkeit(netNodes[x], netNodes[y])) {
+                            g2d.setColor(Color.RED);
+                            g2d.drawLine(netNodes[x].getX(), netNodes[x].getY(), netNodes[y].getX(), netNodes[y].getY());
+                        }
+                    }
+                }
+                g2d.setColor(Color.BLACK);
+            }
+            
+        };
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(breite, hoehe);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
 
     public static boolean erreichbarkeit(Station a, Station b) {
         return sendeReichweite >= Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
     }
 
+    public static boolean erreichbarkeit(Node a, Node b) {
+        return sendeReichweite >= Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
+    }
 }
