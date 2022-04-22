@@ -69,10 +69,7 @@ public class Controller {
         frame.setVisible(true);
     }
 
-
-
     public static boolean reachable(Node a, Node b) {
         return RANGE >= Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
     }
-
 }
