@@ -10,7 +10,7 @@ public class TestCases {
         TestCases testcase = new TestCases();
         //testcase.initNet();
         int nodesFor90 = 0;
-        for (int i = 1600; i < 2500; i += 10) {
+        for (int i = 1500; i < 2000; i += 10) {
             if(testcase.completeNetProb(i) >= 90){
                 nodesFor90 = i;
                 break;
@@ -40,6 +40,7 @@ public class TestCases {
             for (int b = 0; b < mockNodeNet.length; b++) {
                 if(a != b && reachable(mockNodeNet[a], mockNodeNet[b])){
                     isComplete[a] = true;
+                    break;
                 }
             }
         }
