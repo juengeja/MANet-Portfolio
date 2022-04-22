@@ -8,7 +8,7 @@ public class Node extends Thread{
     private Thread receiverThread;
     private final TCPSender sender;
     private Thread senderThread;
-    private static final int range = Controller.RANGE;
+    private static final int RANGE = Controller.RANGE;
 
     public static final int STEPSIZE = Controller.STEPSIZE; //Bei Bewegung: wie weit gehen die Nodes?
 
@@ -54,7 +54,7 @@ public class Node extends Thread{
     }
 
     public int getRange(){
-        return range;
+        return RANGE;
     }
     public int getNodeID(){
         return nodeID;
