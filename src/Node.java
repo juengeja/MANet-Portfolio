@@ -8,7 +8,7 @@ public class Node extends Thread{
     private Thread receiverThread;
     private TCPSender sender;
     private Thread senderThread;
-    private static int range = 10;
+    private static int range = 100;
 
     public Node(int nodeID, int totalNumberOfNodes){
         this.nodeID = nodeID;
