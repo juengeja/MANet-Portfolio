@@ -18,8 +18,8 @@ public class Node extends Thread{
     }
 
     public void init(){
-        x = Math.round((float)Math.random()*100);
-        y = Math.round((float)Math.random()*100);
+        x = Math.round((float)Math.random()*1000);
+        y = Math.round((float)Math.random()*1000);
         System.out.println("Initialisierung mit Koordinaten: " + x + ", " + y);
         this.receiverThread = new Thread(receiver);
         receiverThread.start();
