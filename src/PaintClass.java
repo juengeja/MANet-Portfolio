@@ -57,16 +57,12 @@ public class PaintClass {
     }
 
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new PaintClass());
+   public static void main(String[] args) {
+        SwingUtilities.invokeLater(PaintClass::new);
     }
 
     public boolean erreichbarkeit(Station a, Station b) {
-        if(sendeReichweite >= Math.sqrt(Math.pow((a.getX()-b.getX()),2) + Math.pow((a.getY()-b.getY()), 2))) {
-            return true;
-        }
-        return false;
+        return sendeReichweite >= Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
     }
 
 }
