@@ -1,7 +1,7 @@
 public class Station {
     private int x, y, groesse;
 
-    public static final int schrittgroesse = PaintClass.schrittgroesse;
+    public static final int schrittgroesse = Controller.schrittgroesse;
 
     //Konstruktor
     public Station(int x, int y, int groesse) {
@@ -66,14 +66,14 @@ public class Station {
             }
             if (zufallszahl >= 0.57 && zufallszahl < 0.64) {
                 //Zu 7% bewegen sich die Stationen nach rechts. Voraussetzung: Innerhalb des Spielfelds nach der Bewegung.
-                if (this.getX() + schrittgroesse < PaintClass.breite) {
+                if (this.getX() + schrittgroesse < Controller.breite) {
                     this.setX(this.getX() + schrittgroesse);
                 }
             }
 
             if (zufallszahl >= 0.64 && zufallszahl < 0.71) {
                 //Zu 7% bewegen sich die Stationen nach oben. Voraussetzung: Innerhalb des Spielfelds nach der Bewegung.
-                if (this.getY() + schrittgroesse < PaintClass.hoehe) {
+                if (this.getY() + schrittgroesse < Controller.hoehe) {
                     this.setY(this.getY() + schrittgroesse);
                 }
             }
@@ -106,7 +106,7 @@ public class Station {
                 } else {
                     this.setX(this.getX() + schrittgroesse);
                 }
-                if (this.getY() < PaintClass.hoehe - schrittgroesse) {
+                if (this.getY() < Controller.hoehe - schrittgroesse) {
                     this.setY(this.getY() + schrittgroesse);
                 } else {
                     this.setY(this.getY() - schrittgroesse);
@@ -115,7 +115,7 @@ public class Station {
 
             if (zufallszahl >= 0.89 && zufallszahl < 0.945) {
                 //Zu 5.5% bewegen sich die Stationen nach rechts oben. Voraussetzung: Innerhalb des Spielfelds nach der Bewegung.
-                if (this.getX() < PaintClass.breite - schrittgroesse) {
+                if (this.getX() < Controller.breite - schrittgroesse) {
                     this.setX(this.getX() + schrittgroesse);
                 } else {
                     this.setX(this.getX() - schrittgroesse);
@@ -129,12 +129,12 @@ public class Station {
 
             if (zufallszahl >= 0.945 && zufallszahl < 1) {
                 //Zu 5.5% bewegen sich die Stationen nach rechts unten. Voraussetzung: Innerhalb des Spielfelds nach der Bewegung.
-                if (this.getX() < PaintClass.breite - schrittgroesse) {
+                if (this.getX() < Controller.breite - schrittgroesse) {
                     this.setX(this.getX() + schrittgroesse);
                 } else {
                     this.setX(this.getX() - schrittgroesse);
                 }
-                if (this.getY() < PaintClass.hoehe - schrittgroesse) {
+                if (this.getY() < Controller.hoehe - schrittgroesse) {
                     this.setY(this.getY() + schrittgroesse);
                 } else {
                     this.setY(this.getY() - schrittgroesse);
