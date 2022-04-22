@@ -13,7 +13,7 @@ public class TestCases {
     public void initNet(){
         this.mockNodes = new MockNode[KNOTENZAHL];
         for (int i = 0; i < mockNodes.length; i++) {
-            mockNodes[i] = new MockNode(i);
+            mockNodes[i] = new MockNode();
             mockNodes[i].init();
         }
         
@@ -23,11 +23,7 @@ public class TestCases {
     private class MockNode {
         private int x;
         private int y;
-        private int mockNodeID;
 
-        public MockNode(int id){
-            this.mockNodeID = id;
-        }
         public void init(){
             x = Math.round((float)Math.random()*Controller.HEIGHT);
             y = Math.round((float)Math.random()*Controller.WIDTH);
