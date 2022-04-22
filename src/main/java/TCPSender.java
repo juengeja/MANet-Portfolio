@@ -4,10 +4,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TCPSender implements Runnable{
     
-    private Node ownNode;
-    private int ownPort;
-    private ConcurrentLinkedQueue<Message> messageQueue;
-    private String hostname = "localhost";
+    private final Node ownNode;
+    private final int ownPort;
+    private final ConcurrentLinkedQueue<Message> messageQueue;
+    private final String hostname = "localhost";
     private PrintWriter networkOut;
 
     public TCPSender(Node ownNode){

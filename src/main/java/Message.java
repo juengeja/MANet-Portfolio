@@ -2,14 +2,14 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
     
-    private int sequenceNumber;
-    private int destinationPort;
-    private Type type;
+    private final int sequenceNumber;
+    private final int destinationPort;
+    private final Type type;
     private String dataLoad;
     private int sourcePort;
     private int lastSenderPort;
-    private int sourceX;
-    private int sourceY;
+    private final int sourceX;
+    private final int sourceY;
 
     public Message(int sequenceNumber, Type type, int destinationPort, int sourceX, int sourceY){
         this.sequenceNumber = sequenceNumber;

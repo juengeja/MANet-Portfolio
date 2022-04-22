@@ -3,8 +3,8 @@ import java.net.*;
 
 public class TCPReceiver implements Runnable{
     
-    private Node ownNode;
-    private int port;
+    private final Node ownNode;
+    private final int port;
 
     public TCPReceiver(Node ownNode){
         this.ownNode = ownNode;

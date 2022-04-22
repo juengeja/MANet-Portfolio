@@ -8,7 +8,11 @@ public class Node extends Thread{
     private Thread receiverThread;
     private final TCPSender sender;
     private Thread senderThread;
+
     private static final int RANGE = Controller.RANGE;
+
+    public static final int HEIGHT = Controller.HEIGHT; //1m = 10px
+    public static final int WIDTH = Controller.WIDTH;
 
     public static final int STEPSIZE = Controller.STEPSIZE; //Bei Bewegung: wie weit gehen die Nodes?
 
@@ -20,8 +24,8 @@ public class Node extends Thread{
     }
 
     public void init(){
-        x = Math.round((float)Math.random()*1000);
-        y = Math.round((float)Math.random()*1000);
+        x = Math.round((float)Math.random()*HEIGHT);
+        y = Math.round((float)Math.random()*WIDTH);
         System.out.println("Initialisierung mit Koordinaten: " + x + ", " + y);
         this.receiverThread = new Thread(receiver);
         receiverThread.start();
