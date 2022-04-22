@@ -1,15 +1,14 @@
+import javax.swing.*;
 import java.awt.*;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 public class PaintClass {
 
     public static final int hoehe = 1000; //1m = 10px
     public static final int breite = 1000;
     public static final int anzahl = 90;
-    public final int sendeReichweite = 100;
+    public static final int sendeReichweite = 100;
     public static Station[] stationen = new Station[anzahl];
+    public static final int schrittgroesse = 10;
 
     public PaintClass() {
         JFrame frame = new JFrame("Mobiles Ad-Hoc Netz") {
@@ -27,7 +26,6 @@ public class PaintClass {
                     for(int z = 0; z < stationen.length; z++) {
                         Station neuerStationStandort = stationen[z].bewegung();
                         g2d.drawOval(stationen[z].getX()-(sendeReichweite/2), stationen[z].getY()-(sendeReichweite/2), sendeReichweite, sendeReichweite);
-                        //Station neuerStationStandort = Station.punktErstellen(stationen[z].getX(), stationen[z].getY(), sendeReichweite);
                         stationen[z] = neuerStationStandort;
                     }
                     for(int x = 0; x < anzahl; x++) {
@@ -57,11 +55,12 @@ public class PaintClass {
     }
 
 
-   public static void main(String[] args) {
+
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(PaintClass::new);
     }
 
-    public boolean erreichbarkeit(Station a, Station b) {
+    public static boolean erreichbarkeit(Station a, Station b) {
         return sendeReichweite >= Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
     }
 
