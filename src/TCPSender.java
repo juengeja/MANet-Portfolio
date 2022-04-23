@@ -6,7 +6,7 @@ public class TCPSender implements Runnable{
     
     private Node ownNode;
     private int ownPort;
-    private ConcurrentLinkedQueue<Message> messageQueue;
+    private ConcurrentLinkedQueue<HelloMsg> messageQueue;
     private String hostname = "localhost";
     private PrintWriter networkOut;
 
@@ -23,7 +23,7 @@ public class TCPSender implements Runnable{
 
         while(true){
             // Checking for a Message to send
-            Message nextMessage = messageQueue.poll();
+            HelloMsg nextMessage = messageQueue.poll();
             if(nextMessage != null){
                 // Creating socket as a ressource
                 try(Socket socket = new Socket(hostname, nextMessage.getDestinationPort())){
@@ -47,7 +47,7 @@ public class TCPSender implements Runnable{
 
     }
 
-    public void sendMessage(Message message){
+    public void sendMessage(HelloMsg message){
         messageQueue.add(message);
     }
 }

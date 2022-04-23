@@ -1,16 +1,26 @@
 public class Controller {
 
-    private static final int TOTAL_NUMBER_OF_NODES = 2;
-
     public static void main(String[] args) {
-        Node[] nodes = new Node[TOTAL_NUMBER_OF_NODES];
-        for (int i = 0; i < nodes.length; i++) {
-            Node node = new Node(i, TOTAL_NUMBER_OF_NODES);
-            nodes[i] = node;
-            node.init();
-        }
-        for (Node node : nodes) {
-            node.start();
+
+            Node node1 = new Node(1, 50, 50);
+            node1.init();
+            node1.start();
+            Node node2 = new Node(2, 45, 50);
+            node2.init();
+            node2.start();
+            Node node3 = new Node(3, 40, 50);
+            node3.init();
+            node3.start();
+            Node node4 = new Node(4, 49, 54);
+            node4.init();
+            node4.start();
+            Node node5 = new Node(5, 51, 54);
+            node5.init();
+            node5.start();
+            Node node6 = new Node(6, 55, 50);
+            node6.init();
+            node6.start();
+            
         }
     }
-}
+

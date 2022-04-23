@@ -26,19 +26,20 @@ public class TCPReceiver implements Runnable{
                 // Eingaberoutine
                 in = new ObjectInputStream(connection.getInputStream());
                 //Nachricht lesen
-                Message message = (Message) in.readObject();
+                HelloMsg helloMsg = (HelloMsg) in.readObject();
 
-                if(ownNode.getRange() >= Math.sqrt(Math.pow((ownNode.getX()-message.getSourceX()),2) + Math.pow((ownNode.getY()-message.getSourceY()), 2))){
+                if(ownNode.getRange() >= Math.sqrt(Math.pow((ownNode.getX()-helloMsg.getSourceX()),2) + Math.pow((ownNode.getY()-helloMsg.getSourceY()), 2))){
 
                     // Verarbeiten der Nachricht
-                    switch (message.getType()) {
+                    switch (helloMsg.getType()) {
                         case HELLO:
                             // TODO
-                            System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
+                            ownNode.prcssHelloMsg(helloMsg);
+                            System.out.println("Receiver [" + this.port + "] received a " + helloMsg.getType() + "-Message.");
                             break;
                         case TC:
                             // TODO
-                            System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
+                            System.out.println("Receiver [" + this.port + "] received a " + helloMsg.getType() + "-Message.");
                             break;
                         default:
                             // TODO

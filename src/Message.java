@@ -2,7 +2,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
     
-    private int sequenceNumber;
+    private int seq;
     private int destinationPort;
     private Type type;
     private String dataLoad;
@@ -11,12 +11,47 @@ public class Message implements Serializable{
     private int sourceX;
     private int sourceY;
 
+ 
+   
+
     public Message(int sequenceNumber, Type type, int destinationPort, int sourceX, int sourceY){
-        this.sequenceNumber = sequenceNumber;
+        this.setSeq(sequenceNumber);
         this.type = type;
         this.destinationPort = destinationPort;
         this.sourceX = sourceX;
         this.sourceY = sourceY;
+    }
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
+    }
+
+    public String getDataLoad() {
+        return dataLoad;
+    }
+
+    public void setDataLoad(String dataLoad) {
+        this.dataLoad = dataLoad;
+    }
+
+    public int getSourcePort() {
+        return sourcePort;
+    }
+
+    public void setSourcePort(int sourcePort) {
+        this.sourcePort = sourcePort;
+    }
+
+    public int getLastSenderPort() {
+        return lastSenderPort;
+    }
+
+    public void setLastSenderPort(int lastSenderPort) {
+        this.lastSenderPort = lastSenderPort;
     }
 
     public Type getType(){
