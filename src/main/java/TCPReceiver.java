@@ -3,12 +3,15 @@ import java.net.*;
 
 public class TCPReceiver implements Runnable{
     
-    private Node ownNode;
-    private int port;
+    private final Node ownNode;
 
+    private final int port;
+   
     public TCPReceiver(Node ownNode){
         this.ownNode = ownNode;
+       
         this.port = 7700 + ownNode.getNodeID();
+       
     }
 
     @Override
@@ -19,34 +22,40 @@ public class TCPReceiver implements Runnable{
         ObjectInputStream in = null;
 
         try(ServerSocket server = new ServerSocket(this.port)){
-
             while(true){
                 // Warten auf Nachrichten
                 connection = server.accept();
                 // Eingaberoutine
                 in = new ObjectInputStream(connection.getInputStream());
                 //Nachricht lesen
-                Message message = (Message) in.readObject();
-
-                if(ownNode.getRange() >= Math.sqrt(Math.pow((ownNode.getX()-message.getSourceX()),2) + Math.pow((ownNode.getY()-message.getSourceY()), 2))){
-
+                Message msg = (Message) in.readObject();
                     // Verarbeiten der Nachricht
-                    switch (message.getType()) {
+                    switch (msg.getType()) {
                         case HELLO:
                             // TODO
-                            System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
+                            ownNode.prcssHelloMsg(msg);
+                            //System.out.println("Receiver [" + this.port + "] received a " + msg.getType() + "-Message.");
                             break;
                         case TC:
                             // TODO
-                            System.out.println("Receiver [" + this.port + "] received a " + message.getType() + "-Message.");
+                            ownNode.prcssTCMsg(msg);
+                            //System.out.println("Receiver [" + this.port + "] received a " + msg.getType() + "-Message.");
                             break;
+                        case CONTENT:
+                        // TODO
+                        if(msg.getDestinationPort() == (ownNode.getNodeID() + 7700)){
+                            ContentMsg typeData = (ContentMsg) msg.getTypeData();
+                            System.out.println("Forward received. Sender: " + msg.getSenderID());
+                            System.out.println("Message received. Content:  " + typeData.getContent());
+                        }
+                        else 
+                        {ownNode.forwardContentMsg(msg);
+                            System.out.println("Forward received. Sender: " + msg.getSenderID());}
+                        break;
                         default:
                             // TODO
                             System.out.println("Receiver [" + this.port + "] received something strange.");
                     }
-                } else {
-                    System.out.println("Receiver der Node " + ownNode.getNodeID() + " ist außer Reichweite für diese Nachricht!");
-                }
             }
         } catch(IOException e){
             e.printStackTrace();
@@ -63,5 +72,7 @@ public class TCPReceiver implements Runnable{
                 e.printStackTrace();
             }
         }
+        }
     }
-}
+  
+

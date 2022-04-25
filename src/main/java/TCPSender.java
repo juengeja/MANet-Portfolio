@@ -1,13 +1,14 @@
 import java.io.*;
 import java.net.*;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TCPSender implements Runnable{
     
-    private Node ownNode;
-    private int ownPort;
-    private ConcurrentLinkedQueue<Message> messageQueue;
-    private String hostname = "localhost";
+    private final Node ownNode;
+    private final int ownPort;
+    private final ConcurrentLinkedQueue<Message> messageQueue;
+    private final String hostname = "localhost";
     private PrintWriter networkOut;
 
     public TCPSender(Node ownNode){
@@ -19,7 +20,7 @@ public class TCPSender implements Runnable{
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        System.out.println("Sender of Node [" + ownNode.getNodeID() + "] is running.");
+        //System.out.println("Sender of Node [" + ownNode.getNodeID() + "] is running.");
 
         while(true){
             // Checking for a Message to send
@@ -32,8 +33,8 @@ public class TCPSender implements Runnable{
                     // Send message
                     networkOut.writeObject(nextMessage);
                     networkOut.flush();
-                    System.out.println("Sender [" + this.ownPort + "] send a message to " + nextMessage.getDestinationPort());
-
+                    //System.out.println("Sender [" + this.ownPort + "] send a message to " + nextMessage.getDestinationPort());
+                    
                 } catch(IOException e){
                     e.printStackTrace();
                 } finally {
@@ -47,6 +48,7 @@ public class TCPSender implements Runnable{
 
     }
 
+    
     public void sendMessage(Message message){
         messageQueue.add(message);
     }
