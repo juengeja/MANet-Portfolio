@@ -1,15 +1,16 @@
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.Semaphore;
 
 public class TCPReceiver implements Runnable{
     
     private final Node ownNode;
-
+    private Semaphore[] semaphores;
     private final int port;
    
-    public TCPReceiver(Node ownNode){
+    public TCPReceiver(Node ownNode, Semaphore[] semaphores){
         this.ownNode = ownNode;
-       
+        this.semaphores = semaphores;
         this.port = 7700 + ownNode.getNodeID();
        
     }
@@ -32,17 +33,16 @@ public class TCPReceiver implements Runnable{
                     // Verarbeiten der Nachricht
                     switch (msg.getType()) {
                         case HELLO:
-                            // TODO
                             ownNode.prcssHelloMsg(msg);
+                            semaphores[this.port - 7701].release();
                             //System.out.println("Receiver [" + this.port + "] received a " + msg.getType() + "-Message.");
                             break;
                         case TC:
-                            // TODO
                             ownNode.prcssTCMsg(msg);
-                            //System.out.println("Receiver [" + this.port + "] received a " + msg.getType() + "-Message.");
+                            semaphores[this.port - 7701].release();
+                            System.out.println("Receiver [" + this.port + "] received a " + msg.getType() + "-Message " + "from " + msg.getSenderID() + ".");
                             break;
                         case CONTENT:
-                        // TODO
                         if(msg.getDestinationPort() == (ownNode.getNodeID() + 7700)){
                             ContentMsg typeData = (ContentMsg) msg.getTypeData();
                             System.out.println("Forward received. Sender: " + msg.getSenderID());
@@ -51,11 +51,13 @@ public class TCPReceiver implements Runnable{
                         else 
                         {ownNode.forwardContentMsg(msg);
                             System.out.println("Forward received. Sender: " + msg.getSenderID());}
+                            semaphores[this.port - 7701].release();
                         break;
                         default:
-                            // TODO
                             System.out.println("Receiver [" + this.port + "] received something strange.");
+                            semaphores[this.port - 7701].release();
                     }
+                    
             }
         } catch(IOException e){
             e.printStackTrace();

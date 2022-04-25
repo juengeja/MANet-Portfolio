@@ -1,5 +1,7 @@
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,15 +17,17 @@ public class Controller {
 
     public static void main(String[] args) {
 
-           
-            Node node1 = new Node(1, 500, 500);
-            Node node2 = new Node(2, 400, 500);
-            Node node3 = new Node(3, 300, 500);
-            Node node4 = new Node(4, 480, 420);
-            Node node5 = new Node(5, 520, 420);
-            Node node6 = new Node(6, 600, 500);
+            Semaphore[] semaphore = new Semaphore[6];
+            for (int i = 0; i < semaphore.length; i++) {
+                semaphore[i] = new Semaphore(1);
+            }
 
-
+            Node node1 = new Node(1, 500, 500, semaphore);
+            Node node2 = new Node(2, 400, 500, semaphore);
+            Node node3 = new Node(3, 300, 500, semaphore);
+            Node node4 = new Node(4, 480, 420, semaphore);
+            Node node5 = new Node(5, 520, 420, semaphore);
+            Node node6 = new Node(6, 600, 500, semaphore);
            
             nodes.add(node1);
             nodes.add(node2);
@@ -61,7 +65,7 @@ public class Controller {
         }
 
 
-        public Controller() {
+        /*public Controller() {
             JFrame frame = new JFrame("Mobiles Ad-Hoc Netz") {
     
                 public void paint(Graphics g) {
@@ -97,6 +101,29 @@ public class Controller {
                             e.printStackTrace();
                         }
                         j++;
+                    }
+                }
+            };
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(WIDTH, HEIGHT);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }*/
+
+        public Controller(){
+            JFrame frame = new JFrame("Mobiles Ad-Hoc Netz") {
+                int diameter = (RANGE * 2);
+                public void paint(Graphics g) {
+                    Graphics2D g2d = (Graphics2D) g;
+                    for (Node node : nodes) {
+                        g2d.setColor(Color.BLACK);
+                        g2d.drawOval(node.getX() - RANGE, node.getY() - RANGE, diameter, diameter);
+                        for (Node secondLayerNode : nodes) {
+                            if (reachable(node, secondLayerNode)) {
+                                g2d.setColor(Color.RED);
+                                g2d.drawLine(node.getX(), node.getY(), secondLayerNode.getX(), secondLayerNode.getY());
+                            }
+                        }
                     }
                 }
             };

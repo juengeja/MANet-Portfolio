@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Semaphore;
 
 public class TCPSender implements Runnable{
     
@@ -10,11 +11,13 @@ public class TCPSender implements Runnable{
     private final ConcurrentLinkedQueue<Message> messageQueue;
     private final String hostname = "localhost";
     private PrintWriter networkOut;
+    private Semaphore[] semaphores;
 
-    public TCPSender(Node ownNode){
+    public TCPSender(Node ownNode, Semaphore[] semaphores){
         this.ownNode = ownNode;
         this.ownPort = 7700 + ownNode.getNodeID();
         messageQueue = new ConcurrentLinkedQueue<>();
+        this.semaphores = semaphores;
     }
 
     @Override
@@ -26,22 +29,28 @@ public class TCPSender implements Runnable{
             // Checking for a Message to send
             Message nextMessage = messageQueue.poll();
             if(nextMessage != null){
-                // Creating socket as a ressource
-                try(Socket socket = new Socket(hostname, nextMessage.getDestinationPort())){
-        
-                    ObjectOutputStream networkOut = new ObjectOutputStream(socket.getOutputStream());
-                    // Send message
-                    networkOut.writeObject(nextMessage);
-                    networkOut.flush();
-                    //System.out.println("Sender [" + this.ownPort + "] send a message to " + nextMessage.getDestinationPort());
-                    
-                } catch(IOException e){
-                    e.printStackTrace();
-                } finally {
-                    // Closing networkOut connection, socket is closed automatically
-                    if(networkOut != null ){
-                        networkOut.close();
+                try {
+                    semaphores[nextMessage.getDestinationPort() - 7701].acquire();
+                
+                    // Creating socket as a ressource
+                    try(Socket socket = new Socket(hostname, nextMessage.getDestinationPort())){
+            
+                        ObjectOutputStream networkOut = new ObjectOutputStream(socket.getOutputStream());
+                        // Send message
+                        networkOut.writeObject(nextMessage);
+                        networkOut.flush();
+                        //System.out.println("Sender [" + this.ownPort + "] send a message to " + nextMessage.getDestinationPort());
+                        
+                    } catch(IOException e){
+                        e.printStackTrace();
+                    } finally {
+                        // Closing networkOut connection, socket is closed automatically
+                        if(networkOut != null ){
+                            networkOut.close();
+                        }
                     }
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
                 }
             }
         }

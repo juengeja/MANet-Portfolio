@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 import java.util.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,12 +29,12 @@ public class Node extends Thread {
     private HashMap<Integer, Pair<HashSet<Integer>, Long>> TopologyTable = new HashMap<>();
     private HashMap<Integer, Pair<Integer, Integer>> routingTable = new HashMap<>();
 
-    public Node(int nodeID, int x, int y){
+    public Node(int nodeID, int x, int y, Semaphore[] semaphores){
         this.nodeID = nodeID;
         this.x = x;
         this.y = y;
-        this.receiver = new TCPReceiver(this);
-        this.sender = new TCPSender(this);
+        this.receiver = new TCPReceiver(this, semaphores);
+        this.sender = new TCPSender(this, semaphores);
     }
 
     public void init(HashSet<Node> nodes){
@@ -209,11 +210,11 @@ public class Node extends Thread {
           int mprSelectorID = message.getSenderID();
           message.setSenderID(this.nodeID);
 
-          sender.sendMessage(message);
+          this.sender.sendMessage(message);
           for (int nbr : this.oneHopNbrs){
           if (nbr != mprSelectorID){
-          message.setDestinationPort(8800 + nbr);
-          sender.sendMessage(message);
+          message.setDestinationPort(7700 + nbr);
+          this.sender.sendMessage(message);
           System.out.println("Forward \t" + message);
         }}}
       }
@@ -261,7 +262,7 @@ public class Node extends Thread {
       public class TCTask extends TimerTask {
 
         final static long delay = 1000L;
-        final static long period = 100L;
+        final static long period = 10000L;
 
         @Override
         public void run() {
@@ -272,7 +273,7 @@ public class Node extends Thread {
       private class HelloTask extends TimerTask {
 
         final static long delay = 1000L;
-        final static long period = 100L;
+        final static long period = 10000L;
     
         @Override
         public void run() {
